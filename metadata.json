@@ -1,0 +1,7 @@
+{
+  "name": "RythuMitra",
+  "description": "Integrated Smart Agriculture Platform with crop disease diagnostics, micro-climate early warnings, mandi price tracker, middleman profit calculator, and multilingual voice assistance.",
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
