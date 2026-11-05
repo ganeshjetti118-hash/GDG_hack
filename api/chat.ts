@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
-import mandiData from '../src/data/mandi-sample.json';
-import climateData from '../src/data/climate-data.json';
+import { mandiData } from './data/mandi-data.js';
+import { climateData } from './data/climate-data.js';
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 

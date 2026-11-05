@@ -1,4 +1,4 @@
-import climateData from '../src/data/climate-data.json';
+import { climateData } from './data/climate-data.js';
 
 export default function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*');

@@ -1,8 +1,8 @@
-import climateJson from './climate-data.json';
-import mandiJson from './mandi-sample.json';
+export { climateData } from './climate-data.js';
+export { mandiData } from './mandi-data.js';
 
-export const climateData = climateJson;
-export const mandiData = mandiJson;
+import { climateData } from './climate-data.js';
+import { mandiData } from './mandi-data.js';
 
 export default {
   climateData,

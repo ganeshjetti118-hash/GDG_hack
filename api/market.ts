@@ -1,4 +1,4 @@
-import mandiData from '../src/data/mandi-sample.json';
+import { mandiData } from './data/mandi-data.js';
 
 export default function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*');
