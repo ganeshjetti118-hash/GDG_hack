@@ -1,16 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestore';
+import { climateData, mandiData } from '../src/data/index.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
-
-const CLIMATE_JSON = path.resolve(__dirname, '../src/data/climate-data.json');
-const MANDI_JSON = path.resolve(__dirname, '../src/data/mandi-sample.json');
+try {
+  dotenv.config();
+} catch (e) {}
 
 // Initialize Firebase for server sync
 const firebaseConfig = {
@@ -68,36 +63,30 @@ export async function performDataSync(): Promise<SyncStatus> {
 
   try {
     // 1. Sync Weather Alerts
-    if (fs.existsSync(CLIMATE_JSON)) {
-      const climate = JSON.parse(fs.readFileSync(CLIMATE_JSON, 'utf-8'));
-      const alerts = climate.alerts || [];
+    const alerts = (climateData as any).alerts || [];
 
-      if (db && firestoreApiAvailable) {
-        try {
-          const alertsCol = collection(db, 'weather_alerts');
-          for (const alert of alerts.slice(0, 10)) {
-            await addDoc(alertsCol, {
-              ...alert,
-              syncedAt: new Date().toISOString(),
-              expiresAt: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
-            });
-            alertsCount++;
-          }
-          isFirestoreConnected = true;
-        } catch (dbErr: any) {
-          console.warn('[Sync] Firestore not yet enabled on project; using high-speed local store.');
-          firestoreApiAvailable = false;
-          alertsCount = alerts.length;
+    if (db && firestoreApiAvailable) {
+      try {
+        const alertsCol = collection(db, 'weather_alerts');
+        for (const alert of alerts.slice(0, 10)) {
+          await addDoc(alertsCol, {
+            ...alert,
+            syncedAt: new Date().toISOString(),
+            expiresAt: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
+          });
+          alertsCount++;
         }
-      } else {
+        isFirestoreConnected = true;
+      } catch (dbErr: any) {
+        firestoreApiAvailable = false;
         alertsCount = alerts.length;
       }
+    } else {
+      alertsCount = alerts.length;
     }
 
     // 2. Sync Mandi Market Rates
-    if (fs.existsSync(MANDI_JSON)) {
-      const mandiData = JSON.parse(fs.readFileSync(MANDI_JSON, 'utf-8'));
-      const records = mandiData.records || [];
+    const records = (mandiData as any).records || [];
 
       // Apply mild realistic micro-fluctuation (+/- 1.5%) for fresh ticker updates
       const updatedRecords = records.slice(0, 50).map((r: any) => {
@@ -125,7 +114,6 @@ export async function performDataSync(): Promise<SyncStatus> {
       } else {
         ratesCount = updatedRecords.length;
       }
-    }
 
     latestStatus = {
       lastSyncAt: new Date().toISOString(),
@@ -136,7 +124,7 @@ export async function performDataSync(): Promise<SyncStatus> {
       message: `Successfully refreshed ${ratesCount} mandi rates and ${alertsCount} micro-climate alerts.`
     };
 
-    console.log(`[AgriBridge Sync Completed] ${latestStatus.message}`);
+    console.log(`[RythuMitra Sync Completed] ${latestStatus.message}`);
     return latestStatus;
   } catch (error: any) {
     console.error('[Sync Error]', error);
@@ -155,7 +143,7 @@ export async function performDataSync(): Promise<SyncStatus> {
 // 6-hour interval: 6 * 60 * 60 * 1000 ms = 21,600,000 ms
 const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
 export function startScheduledSyncJob() {
-  console.log('[AgriBridge] Background 6-hour sync scheduler initialized.');
+  console.log('[RythuMitra] Background 6-hour sync scheduler initialized.');
   // Initial run
   performDataSync().catch(console.error);
   // Recurring every 6 hours

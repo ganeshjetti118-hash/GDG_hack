@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSyncTriggered }) => {
           <div>
             <div className="flex items-center space-x-2">
               <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">
-                AgriBridge AI
+                RythuMitra
               </span>
               <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/20">
                 PROD v1.0

@@ -202,7 +202,7 @@ export const MarketTicker: React.FC = () => {
             </div>
           </div>
           <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold w-fit">
-            AgriBridge Direct Advantage
+            RythuMitra Direct Advantage
           </span>
         </div>
 
@@ -324,7 +324,7 @@ export const MarketTicker: React.FC = () => {
           {/* AgriBridge Direct Card */}
           <div className="p-5 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 space-y-3 shadow-lg shadow-emerald-500/10">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">AgriBridge Direct Channel</span>
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">RythuMitra Direct Channel</span>
               <span className="text-xs text-emerald-400 font-mono">+{directPremiumPercent}% premium</span>
             </div>
             <div className="text-2xl font-black text-emerald-300">
@@ -352,7 +352,7 @@ export const MarketTicker: React.FC = () => {
               </div>
             </div>
             <p className="text-[11px] text-slate-300 leading-relaxed pt-2 border-t border-slate-800">
-              By selling {quantityQuintals} Quintals of {calcCommodity} directly through AgriBridge, you keep an extra ₹{calcResults.netExtraProfit.toLocaleString()} for your family.
+              By selling {quantityQuintals} Quintals of {calcCommodity} directly through RythuMitra, you keep an extra ₹{calcResults.netExtraProfit.toLocaleString()} for your family.
             </p>
           </div>
         </div>

@@ -34,7 +34,7 @@ export const MultilingualAgent: React.FC = () => {
     {
       id: 'msg-welcome',
       role: 'assistant',
-      content: 'नमस्ते किसान भाई! मैं आपका एग्रीब्रिज एआई सलाहकार हूँ। आप मुझसे अपनी क्षेत्रीय भाषा या हिंग्लिश में फसल रोग, मंडी भाव, और मौसम की सलाह ले सकते हैं। नीचे अपना सवाल पूछें।',
+      content: 'नमस्ते किसान भाई! मैं आपका रैतुमित्र (RythuMitra) सलाहकार हूँ। आप मुझसे अपनी क्षेत्रीय भाषा या हिंग्लिश में फसल रोग, मंडी भाव, और मौसम की सलाह ले सकते हैं। नीचे अपना सवाल पूछें।',
       language: 'hi',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
@@ -55,14 +55,14 @@ export const MultilingualAgent: React.FC = () => {
     const lang = REGIONAL_LANGUAGES.find(l => l.code === code);
     if (!lang) return;
 
-    let greeting = 'Hello! I am AgriBridge AI Agronomist. Ask me about mandi prices, weather alerts, or crop treatments.';
-    if (code === 'hi') greeting = 'नमस्ते किसान भाई! मैं एग्रीब्रिज एआई सलाहकार हूँ। मंडी भाव या फसल रोग के बारे में पूछें।';
-    if (code === 'te') greeting = 'నమస్కారం రైతు సోదరా! నేను మీ అగ్రిబ్రిడ్జ్ AI సలహాదారుని. పంట తెగుళ్లు మరియు మార్కెట్ ధరల గురించి అడగండి.';
-    if (code === 'ta') greeting = 'வணக்கம் விவசாய நண்பரே! நான் உங்கள் அக்ரிபிரிட்ஜ் AI ஆலோசகர். உங்கள் கேள்விகளைக் கேளுங்கள்.';
-    if (code === 'mr') greeting = 'नमस्कार शेतकरी बंधूंनो! मी आपला ॲग्रीब्रिज एआय सल्लागार आहे. मंडी भाव आणि पिकांचे रोग याविषयी विचारा.';
-    if (code === 'pa') greeting = 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਕਿਸਾਨ ਵੀਰੋ! ਮੈਂ ਐਗਰੀਬ੍ਰਿਜ ਏਆਈ ਸਲਾਹਕਾਰ ਹਾਂ। ਆਪਣੀ ਫਸਲ ਜਾਂ ਮੰਡੀ ਰੇਟ ਬਾਰੇ ਪੁੱਛੋ।';
-    if (code === 'kn') greeting = 'ನಮಸ್ಕಾರ ರೈತ ಬಾಂಧವರೇ! ನಾನು ನಿಮ್ಮ ಅಗ್ರಿಬ್ರಿಡ್ಜ್ AI ಕೃಷಿ ಸಲಹೆಗಾರ. ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ.';
-    if (code === 'bn') greeting = 'নমস্কার কৃষক ভাই! আমি আপনার এগ্রিব্রিজ এআই পরামর্শদাতা। আপনার ফসলের যেকোনো প্রশ্ন করুন।';
+    let greeting = 'Hello! I am RythuMitra AI Agronomist. Ask me about mandi prices, weather alerts, or crop treatments.';
+    if (code === 'hi') greeting = 'नमस्ते किसान भाई! मैं रैतुमित्र (RythuMitra) सलाहकार हूँ। मंडी भाव या फसल रोग के बारे में पूछें।';
+    if (code === 'te') greeting = 'నమస్కారం రైతు సోదరా! నేను మీ రైతుమిత్ర (RythuMitra) AI సలహాదారుని. పంట తెగుళ్లు మరియు మార్కెట్ ధరల గురించి అడగండి.';
+    if (code === 'ta') greeting = 'வணக்கம் விவசாய நண்பரே! நான் உங்கள் ரைத்துமித்ரா (RythuMitra) AI ஆலோசகர். உங்கள் கேள்விகளைக் கேளுங்கள்.';
+    if (code === 'mr') greeting = 'नमस्कार शेतकरी बंधूंनो! मी आपला रैतुमित्र (RythuMitra) सल्लागार आहे. मंडी भाव आणि पिकांचे रोग याविषयी विचारा.';
+    if (code === 'pa') greeting = 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਕਿਸਾਨ ਵੀਰੋ! ਮੈਂ ਰੈਤੂਮਿੱਤਰਾ (RythuMitra) ਸਲਾਹਕਾਰ ਹਾਂ। ਆਪਣੀ ਫਸਲ ਜਾਂ ਮੰਡੀ ਰੇਟ ਬਾਰੇ ਪੁੱਛੋ।';
+    if (code === 'kn') greeting = 'ನಮಸ್ಕಾರ ರೈತ ಬಾಂಧವರೇ! ನಾನು ನಿಮ್ಮ ರೈತುಮಿತ್ರ (RythuMitra) ಕೃಷಿ ಸಲಹೆಗಾರ. ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ.';
+    if (code === 'bn') greeting = 'নমস্কার কৃষক ভাই! আমি আপনার রাইতুমিত্র (RythuMitra) পরামর্শদাতা। আপনার ফসলের যেকোনো প্রশ্ন করুন।';
 
     setMessages(prev => [
       ...prev,

@@ -4,12 +4,13 @@ import react from '@vitejs/plugin-react';
 
 function apiPlugin(): Plugin {
   return {
-    name: 'vite-agribridge-api',
+    name: 'vite-rythumitra-api',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         if (req.url && req.url.startsWith('/api')) {
           try {
-            const { app } = await server.ssrLoadModule('/server/index.ts');
+            const mod = await server.ssrLoadModule('/server/index.ts');
+            const app = mod.default || mod.app;
             return app(req, res, next);
           } catch (err) {
             console.error('[API Middleware Error]', err);

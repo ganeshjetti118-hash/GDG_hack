@@ -78,7 +78,7 @@ export async function handleVoiceWebhook(payload: TwilioVoicePayload, context?: 
     // Farmer just dialed in: Greet and ask for speech input
     twiml.say(
       { voice, language: speechCode as any },
-      'नमस्ते किसान भाई! एग्रीब्रिज एआई किसान हेल्पलाइन में आपका स्वागत है। अपनी फसल की समस्या या मंडी भाव के बारे में अपना सवाल पूछें।'
+      'नमस्ते किसान भाई! रैतुमित्र (RythuMitra) किसान हेल्पलाइन में आपका स्वागत है। अपनी फसल की समस्या या मंडी भाव के बारे में अपना सवाल पूछें।'
     );
 
     const gather = twiml.gather({
@@ -168,7 +168,7 @@ export async function handleVoiceWebhook(payload: TwilioVoicePayload, context?: 
 
   twiml.say(
     { voice, language: speechCode as any },
-    'एग्रीब्रिज से जुड़ने के लिए धन्यवाद। आपकी फसल समृद्ध रहे!'
+    'रैतुमित्र (RythuMitra) से जुड़ने के लिए धन्यवाद। आपकी फसल समृद्ध रहे!'
   );
 
   const callRecord: CallLogRecord = {

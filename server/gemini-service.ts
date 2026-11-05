@@ -5,9 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import type { LeafDiagnosisResult } from '../src/types/diagnostics.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
+try {
+  dotenv.config();
+} catch (e) {}
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 
@@ -161,7 +161,7 @@ export async function generateGroundedResponse(
 
   const targetLang = languageNames[language] || 'English';
 
-  const systemPrompt = `You are AgriBridge AI, an elite Agricultural Extension Officer and agronomy advisory specialist serving Indian farmers.
+  const systemPrompt = `You are RythuMitra, an elite Agricultural Extension Officer and agronomy advisory specialist serving Indian farmers.
 You provide clear, practical, empathetic, and actionable advice tailored to farmers.
 Ground your response strictly in the provided real-time Mandi market rates and micro-climate advisories.
 If the farmer asks in a regional language or code-switched text (e.g. Hinglish, Tenglish), reply fluently in the requested language: ${targetLang}.
@@ -208,7 +208,7 @@ ${groundingContext.recentDiagnostics ? `CROP HEALTH CONTEXT:\n${groundingContext
   return getFallbackGroundedAnswer(userQuery, language, groundingContext);
 }
 
-function getFallbackDiagnosis(): LeafDiagnosisResult {
+export function getFallbackDiagnosis(): LeafDiagnosisResult {
   return {
     cropName: 'Tomato (Solanum lycopersicum)',
     disease: 'Early Blight (Alternaria solani)',
@@ -249,12 +249,12 @@ function getFallbackGroundedAnswer(
   const q = query.toLowerCase();
   if (language === 'hi') {
     if (q.includes('mandi') || q.includes('rate') || q.includes('bhav') || q.includes('daam')) {
-      return `नमस्ते किसान भाई! वर्तमान मंडी दरों के अनुसार, टमाटर का मॉडल भाव ₹1,250 - ₹1,400 प्रति क्विंटल और गेहूं ₹2,250 - ₹2,350 प्रति क्विंटल चल रहा है। बिचौलियों को बेचने के बजाय सीधे एग्रीब्रिज खरीदार को बेचकर आप प्रति क्विंटल ₹300-₹450 का अतिरिक्त लाभ पा सकते हैं।`;
+      return `नमस्ते किसान भाई! वर्तमान मंडी दरों के अनुसार, टमाटर का मॉडल भाव ₹1,250 - ₹1,400 प्रति क्विंटल और गेहूं ₹2,250 - ₹2,350 प्रति क्विंटल चल रहा है। बिचौलियों को बेचने के बजाय सीधे रैतुमित्र (RythuMitra) खरीदार को बेचकर आप प्रति क्विंटल ₹300-₹450 का अतिरिक्त लाभ पा सकते हैं।`;
     }
-    return `नमस्ते किसान भाई! एग्रीब्रिज एआई सलाहकार में आपका स्वागत है। आपके क्षेत्र में वर्तमान मौसम और आर्द्रता को देखते हुए, फफूंद जनित रोगों से बचाव के लिए खेत में जलनिकासी सुनिश्चित करें और नीम तेल (3 मिली/लीटर) का छिड़काव करें।`;
+    return `नमस्ते किसान भाई! रैतुमित्र (RythuMitra) एआई सलाहकार में आपका स्वागत है। आपके क्षेत्र में वर्तमान मौसम और आर्द्रता को देखते हुए, फफूंद जनित रोगों से बचाव के लिए खेत में जलनिकासी सुनिश्चित करें और नीम तेल (3 मिली/लीटर) का छिड़काव करें।`;
   }
   if (language === 'te') {
-    return `నమస్కారం రైతు సోదరా! అగ్రిబ్రిడ్జ్ AI సలహాదారుకు స్వాగతం. మీ ప్రాంతంలో ప్రస్తుత తేమ స్థాయిలు ఎక్కువగా ఉన్నందున, తెగుళ్ల నివారణకు జాగ్రత్తలు తీసుకోండి. మార్కెట్ ధరలు మరియు పంట రక్షణ సలహాల కోసం ఎప్పుడైనా సంప్రదించండి.`;
+    return `నమస్కారం రైతు సోదరా! రైతుమిత్ర (RythuMitra) AI సలహాదారుకు స్వాగతం. మీ ప్రాంతంలో ప్రస్తుత తేమ స్థాయిలు ఎక్కువగా ఉన్నందున, తెగుళ్ల నివారణకు జాగ్రత్తలు తీసుకోండి. మార్కెట్ ధరలు మరియు పంట రక్షణ సలహాల కోసం ఎప్పుడైనా సంప్రదించండి.`;
   }
   return `Hello Farmer! Based on current micro-climate conditions and live APMC Mandi trends, your crop moisture and pricing outlook remain stable. Mandi rates for key produce are holding strong. For any crop disease symptoms, please upload a leaf photo in Crop Diagnostics for instant remedy recommendations.`;
 }
