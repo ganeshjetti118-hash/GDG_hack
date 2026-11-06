@@ -1,5 +1,4 @@
 import { GoogleGenAI } from '@google/genai';
-import { callLogsStore } from './call-logs.js';
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 
@@ -19,9 +18,6 @@ export default async function handler(req: any, res: any) {
     }
     payload = payload || {};
 
-    const callSid = payload.CallSid || `CALL-${Date.now().toString(36)}`;
-    const fromNumber = payload.From || '+91 98000 00000';
-    const toNumber = payload.To || '+91 80000 12345';
     const speechInput = (payload.SpeechResult || '').trim();
 
     let language = 'Hindi';
@@ -38,23 +34,6 @@ export default async function handler(req: any, res: any) {
   </Gather>
   <Say language="${speechCode}" voice="${voice}">हमें आपकी आवाज नहीं सुनाई दी। कृपया दोबारा कॉल करें। धन्यवाद!</Say>
 </Response>`;
-
-      try {
-        callLogsStore.unshift({
-          id: `call-${Date.now()}`,
-          callSid,
-          fromNumber,
-          toNumber,
-          durationSeconds: 15,
-          language,
-          status: 'in-progress',
-          speechTranscript: '(Awaiting farmer speech input)',
-          aiResponseSummary: 'Initial greeting delivered; awaiting caller question.',
-          fullResponseTwiml: greetingXml,
-          timestamp: new Date().toISOString(),
-          confidenceScore: 1.0
-        });
-      } catch (e) {}
 
       return res.status(200).send(greetingXml);
     }
@@ -111,23 +90,6 @@ Farmer speech: ${speechInput}`;
   </Gather>
   <Say language="${speechCode}" voice="${voice}">RythuMitra किसान सेवा से जुड़ने के लिए धन्यवाद। आपका दिन शुभ हो!</Say>
 </Response>`;
-
-    try {
-      callLogsStore.unshift({
-        id: `call-${Date.now()}`,
-        callSid,
-        fromNumber,
-        toNumber,
-        durationSeconds: Math.floor(Math.random() * 25) + 25,
-        language,
-        status: 'completed',
-        speechTranscript: speechInput,
-        aiResponseSummary: spokenText.length > 140 ? spokenText.substring(0, 140) + '...' : spokenText,
-        fullResponseTwiml: responseXml,
-        timestamp: new Date().toISOString(),
-        confidenceScore: payload.Confidence ? parseFloat(payload.Confidence) : 0.95
-      });
-    } catch (e) {}
 
     return res.status(200).send(responseXml);
   } catch (err: any) {

@@ -1,8 +1,16 @@
 import { GoogleGenAI } from '@google/genai';
-import { mandiData } from './data/mandi-data.js';
-import { climateData } from './data/climate-data.js';
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
+
+const defaultMandiContext = `Tomato at Kolar (Karnataka): Modal ₹1,250/Q (Min ₹1,000, Max ₹1,500)
+Wheat at Khanna (Punjab): Modal ₹2,300/Q (Min ₹2,275, Max ₹2,350)
+Onion at Lasalgaon (Maharashtra): Modal ₹1,120/Q (Min ₹950, Max ₹1,350)
+Paddy (Dhan) at Suryapet (Telangana): Modal ₹2,203/Q (Min ₹2,183, Max ₹2,250)
+Cotton at Rajkot (Gujarat): Modal ₹7,100/Q (Min ₹6,800, Max ₹7,400)`;
+
+const defaultWeatherContext = `[HIGH] High Humidity Alert: Relative humidity > 85%. Elevated risk for Early Blight and Rust.
+[MEDIUM] Soil Moisture Advisory: Topsoil moisture at 0-10cm depth is 18%. Micro-irrigation recommended for vegetable crops.
+[LOW] Spray Window Advisory: Wind speed 11 km/h. Suitable window for foliar bio-fungicide application.`;
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -39,28 +47,8 @@ export default async function handler(req: any, res: any) {
 
     const targetLang = languageNames[language] || 'English';
 
-    let groundedMandi = context.mandiContext;
-    let groundedWeather = context.weatherContext;
-
-    if (!groundedMandi && mandiData) {
-      const samples = (mandiData as any).records?.slice(0, 5) || [];
-      groundedMandi = samples
-        .map(
-          (r: any) =>
-            `${r.commodity} at ${r.market} (${r.state}): Modal ₹${r.modalPrice}/Q (Min ₹${r.minPrice}, Max ₹${r.maxPrice})`,
-        )
-        .join('\n');
-    }
-
-    if (!groundedWeather && climateData) {
-      const alerts = (climateData as any).alerts?.slice(0, 3) || [];
-      groundedWeather = alerts
-        .map(
-          (a: any) =>
-            `[${a.severity.toUpperCase()}] ${a.title}: ${a.description}`,
-        )
-        .join('\n');
-    }
+    const groundedMandi = context.mandiContext || defaultMandiContext;
+    const groundedWeather = context.weatherContext || defaultWeatherContext;
 
     const systemPrompt = `You are RythuMitra, an elite Agricultural Extension Officer and agronomy advisory specialist serving Indian farmers.
 You provide clear, practical, empathetic, and actionable advice tailored to farmers.
@@ -68,8 +56,11 @@ Ground your response strictly in the provided real-time Mandi market rates and m
 If the farmer asks in a regional language or code-switched text, reply fluently in the requested language: ${targetLang}.
 
 REAL-TIME CONTEXT:
-${groundedWeather ? `WEATHER & SOIL ADVISORIES:\n${groundedWeather}\n` : ''}
-${groundedMandi ? `LIVE APMC MANDI RATES:\n${groundedMandi}\n` : ''}
+WEATHER & SOIL ADVISORIES:
+${groundedWeather}
+
+LIVE APMC MANDI RATES:
+${groundedMandi}
 `;
 
     if (apiKey && apiKey !== 'PLACEHOLDER_API_KEY') {
@@ -88,7 +79,7 @@ ${groundedMandi ? `LIVE APMC MANDI RATES:\n${groundedMandi}\n` : ''}
         return res.status(200).json({
           success: true,
           response: response.text || 'Advisory generated successfully.',
-          groundedIn: { hasMandiRates: !!groundedMandi, hasWeatherAlerts: !!groundedWeather }
+          groundedIn: { hasMandiRates: true, hasWeatherAlerts: true }
         });
       } catch (aiErr: any) {
         console.warn('Gemini chat notice, using fallback:', aiErr.message);

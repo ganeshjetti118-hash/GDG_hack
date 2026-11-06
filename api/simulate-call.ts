@@ -1,5 +1,4 @@
 import { GoogleGenAI } from '@google/genai';
-import { callLogsStore } from './call-logs.js';
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 
@@ -88,11 +87,6 @@ Farmer Question: ${speechInput}`;
       timestamp: new Date().toISOString(),
       confidenceScore: 0.96
     };
-
-    // Prepend to in-memory call logs store
-    try {
-      callLogsStore.unshift(callRecord);
-    } catch (e) {}
 
     return res.status(200).json({ success: true, callRecord, twiml });
   } catch (err: any) {
